@@ -1,16 +1,12 @@
-# tasks/models.py
-
 from django.db import models
 from django.contrib.auth.models import User
 
-# Category model
 class Category(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
 
-# Project model
 class Project(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -20,21 +16,18 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
-# Priority model
 class Priority(models.Model):
     level = models.CharField(max_length=50)
 
     def __str__(self):
         return self.level
 
-# Tag model
 class Tag(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
 
-# Task model
 class Task(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
