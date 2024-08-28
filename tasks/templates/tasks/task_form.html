@@ -1,0 +1,165 @@
+<!-- tasks/templates/tasks/task_form.html -->
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Adicionar/Editar Tarefa</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'index' %}">Gerenciador de Tarefas</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'task_list' %}">Ver Tarefas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'task_create' %}">Adicionar Tarefa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'project_list' %}">Ver Projetos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'project_create' %}">Adicionar Projeto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'priority_list' %}">Ver Prioridades</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'priority_create' %}">Adicionar Prioridade</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tag_list' %}">Ver Etiquetas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tag_create' %}">Adicionar Etiqueta</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'category_list' %}">Ver Categorias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'category_create' %}">Adicionar Categoria</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Formulário de Tarefa -->
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Adicionar/Editar Tarefa</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="id_title" class="form-label">Título</label>
+                        <input type="text" name="title" class="form-control" id="id_title" value="{{ form.title.value|default_if_none:'' }}">
+                        {% for error in form.title.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_description" class="form-label">Descrição</label>
+                        <textarea name="description" class="form-control" id="id_description">{{ form.description.value|default_if_none:'' }}</textarea>
+                        {% for error in form.description.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" name="completed" class="form-check-input" id="id_completed" {% if form.completed.value %}checked{% endif %}>
+                        <label class="form-check-label" for="id_completed">Completa</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_category" class="form-label">Categoria</label>
+                        <select name="category" class="form-select" id="id_category">
+                            {% for option in form.category.field.choices %}
+                                <option value="{{ option.0 }}" {% if option.0 == form.category.value %}selected{% endif %}>{{ option.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        {% for error in form.category.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_assigned_to" class="form-label">Atribuída Para</label>
+                        <select name="assigned_to" class="form-select" id="id_assigned_to">
+                            {% for option in form.assigned_to.field.choices %}
+                                <option value="{{ option.0 }}" {% if option.0 == form.assigned_to.value %}selected{% endif %}>{{ option.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        {% for error in form.assigned_to.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_due_date" class="form-label">Data de Vencimento</label>
+                        <input type="date" name="due_date" class="form-control" id="id_due_date" value="{{ form.due_date.value|default_if_none:'' }}">
+                        {% for error in form.due_date.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_project" class="form-label">Projeto</label>
+                        <select name="project" class="form-select" id="id_project">
+                            {% for option in form.project.field.choices %}
+                                <option value="{{ option.0 }}" {% if option.0 == form.project.value %}selected{% endif %}>{{ option.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        {% for error in form.project.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_priority" class="form-label">Prioridade</label>
+                        <select name="priority" class="form-select" id="id_priority">
+                            {% for option in form.priority.field.choices %}
+                                <option value="{{ option.0 }}" {% if option.0 == form.priority.value %}selected{% endif %}>{{ option.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        {% for error in form.priority.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_tags" class="form-label">Etiqueta</label>
+                        <select name="tags" class="form-select" id="id_tags">
+                            <option value="" {% if form.tags.value == None %}selected{% endif %}>---------</option>
+                            {% for option in form.tags.field.choices %}
+                                <option value="{{ option.0 }}" {% if option.0 == form.tags.value %}selected{% endif %}>{{ option.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        {% for error in form.tags.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Salvar Tarefa</button>
+                    <a href="{% url 'task_list' %}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS e Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
