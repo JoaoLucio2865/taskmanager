@@ -62,6 +62,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Nome da Etiqueta</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -69,6 +70,10 @@
                 <tr>
                     <td>{{ tag.id }}</td>
                     <td>{{ tag.name }}</td>
+                    <td>
+                        <a href="{% url 'tag_edit' tag.id %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'tag_delete' tag.id %}" class="btn btn-danger btn-sm">Excluir</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
